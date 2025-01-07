@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pizzas>
+    <pizza id="1">
+        <nombre>Hawaiana</nombre>
+        <precioTotal>8.0</precioTotal>
+        <tamano>MEDIANO</tamano>
+        <ingredientes>
+            <ingrediente>
+                <id>2</id>
+                <nombre>Base con trigo</nombre>
+                <alergenos>
+                    <alergeno>gluten</alergeno>
+                    <alergeno>sulfitos</alergeno>
+                </alergenos>
+            </ingrediente>
+            <ingrediente>
+                <id>4</id>
+                <nombre>Tomate</nombre>
+                <alergenos>
+                    <alergeno>fructosa</alergeno>
+                </alergenos>
+            </ingrediente>
+            <ingrediente>
+                <id>1</id>
+                <nombre>Queso</nombre>
+                <alergenos>
+                    <alergeno>lactosa</alergeno>
+                    <alergeno>adictivos</alergeno>
+                </alergenos>
+            </ingrediente>
+            <ingrediente>
+                <id>5</id>
+                <nombre>Jamón York</nombre>
+                <alergenos/>
+            </ingrediente>
+            <ingrediente>
+                <id>6</id>
+                <nombre>Piña</nombre>
+                <alergenos>
+                    <alergeno>fructosa</alergeno>
+                </alergenos>
+            </ingrediente>
+        </ingredientes>
+    </pizza>
+    <pizza id="1">
+        <nombre>Hawaiana</nombre>
+        <precioTotal>8.0</precioTotal>
+        <tamano>MEDIANO</tamano>
+        <ingredientes>
+            <ingrediente>
+                <id>2</id>
+                <nombre>Base con trigo</nombre>
+                <alergenos>
+                    <alergeno>gluten</alergeno>
+                    <alergeno>sulfitos</alergeno>
+                </alergenos>
+            </ingrediente>
+            <ingrediente>
+                <id>4</id>
+                <nombre>Tomate</nombre>
+                <alergenos>
+                    <alergeno>fructosa</alergeno>
+                </alergenos>
+            </ingrediente>
+            <ingrediente>
+                <id>1</id>
+                <nombre>Queso</nombre>
+                <alergenos>
+                    <alergeno>lactosa</alergeno>
+                    <alergeno>adictivos</alergeno>
+                </alergenos>
+            </ingrediente>
+            <ingrediente>
+                <id>5</id>
+                <nombre>Jamón York</nombre>
+                <alergenos/>
+            </ingrediente>
+            <ingrediente>
+                <id>6</id>
+                <nombre>Piña</nombre>
+                <alergenos>
+                    <alergeno>fructosa</alergeno>
+                </alergenos>
+            </ingrediente>
+        </ingredientes>
+    </pizza>
+    <pizza id="1">
+        <nombre>Hawaiana</nombre>
+        <precioTotal>8.0</precioTotal>
+        <tamano>MEDIANO</tamano>
+        <ingredientes>
+            <ingrediente>
+                <id>2</id>
+                <nombre>Base con trigo</nombre>
+                <alergenos>
+                    <alergeno>gluten</alergeno>
+                    <alergeno>sulfitos</alergeno>
+                </alergenos>
+            </ingrediente>
+            <ingrediente>
+                <id>4</id>
+                <nombre>Tomate</nombre>
+                <alergenos>
+                    <alergeno>fructosa</alergeno>
+                </alergenos>
+            </ingrediente>
+            <ingrediente>
+                <id>1</id>
+                <nombre>Queso</nombre>
+                <alergenos>
+                    <alergeno>lactosa</alergeno>
+                    <alergeno>adictivos</alergeno>
+                </alergenos>
+            </ingrediente>
+            <ingrediente>
+                <id>5</id>
+                <nombre>Jamón York</nombre>
+                <alergenos/>
+            </ingrediente>
+            <ingrediente>
+                <id>6</id>
+                <nombre>Piña</nombre>
+                <alergenos>
+                    <alergeno>fructosa</alergeno>
+                </alergenos>
+            </ingrediente>
+        </ingredientes>
+    </pizza>
+</pizzas>
