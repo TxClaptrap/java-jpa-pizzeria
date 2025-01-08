@@ -2,8 +2,12 @@ package ies.modelo;
 
 import java.util.List;
 
-public class LineaPedido {
+import jakarta.persistence.Entity;
+
+@Entity
+public class LineaPedido {dd
     
+    //TODO sigue aquí
     private int id;
     private int cantidad;
     private Producto producto;

@@ -3,15 +3,27 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+
+@Entity
 public class Pedido {
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Temporal(TemporalType.DATE)
     private LocalDate fecha;
     private List<LineaPedido> listaLineaPedidos; 
     private double precioTotal;
     private Pagable metodoPago;
     private EstadoPedido estado;
 
+    @ManyToOne   
     private Cliente cliente;
 
     public Pedido(Cliente cliente) {

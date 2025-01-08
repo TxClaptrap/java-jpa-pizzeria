@@ -5,11 +5,12 @@ import java.util.List;
 
 import ies.controlador.dao.ClienteDao;
 import ies.controlador.dao.impl.JdbcClienteDao;
+import ies.controlador.dao.impl.JpaClienteDao;
 import ies.modelo.Cliente;
 
 public class ControladorCliente {
 
-    ClienteDao clienteDao = new JdbcClienteDao();
+    ClienteDao clienteDao = new JpaClienteDao();
 
     public void registrarCliente(Cliente cliente) throws SQLException {
         if (clienteDao.findClienteByEmail(cliente.getEmail()) == null) {

@@ -2,11 +2,13 @@ package ies.modelo;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Cliente {
@@ -20,9 +22,11 @@ public class Cliente {
     private String direccion;
     @Column(unique = true, nullable = false)
     private String telefono;
+    @Column(unique = true, nullable = false)
     private String email;
     private String password;
 
+    @OneToMany(mappedBy = "cliente", cascade = {CascadeType.ALL, CascadeType.REMOVE})
     private List<Pedido> listaPedidos;
 
     private boolean administrador;

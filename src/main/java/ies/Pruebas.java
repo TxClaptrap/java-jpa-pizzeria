@@ -2,6 +2,7 @@ package ies;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,23 @@ import ies.modelo.ProductosSeparados;
 import ies.modelo.SIZE;
 
 public class Pruebas { 
+    public static void main(String[] args) {
+        
+        
+    ControladorCliente controladorCliente = new ControladorCliente();
+
+    Cliente cliente = new Cliente("11111111P", "Pepe", "C/Falsa", "666000000", "zi@f.c", "cosa");
+
+    try {
+        controladorCliente.registrarCliente(cliente);
+    } catch (SQLException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+    
+    }
+
+
 
     /* 
     public static void main(String[] args) {
