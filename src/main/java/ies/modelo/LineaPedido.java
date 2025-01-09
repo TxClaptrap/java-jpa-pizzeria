@@ -3,13 +3,19 @@ package ies.modelo;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 @Entity
-public class LineaPedido {dd
+public class LineaPedido {
     
-    //TODO sigue aquí
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private int cantidad;
+    @OneToOne
     private Producto producto;
     private Double precio;
 

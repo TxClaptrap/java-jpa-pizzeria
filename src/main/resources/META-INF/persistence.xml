@@ -6,6 +6,7 @@
     <persistence-unit name="default">
         <class>ies.modelo.Cliente</class>
         <class>ies.modelo.Pedido</class>
+        <class>ies.modelo.Producto</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver"
                 value="com.mysql.cj.jdbc.Driver" />

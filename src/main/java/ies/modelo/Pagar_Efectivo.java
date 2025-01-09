@@ -1,6 +1,9 @@
 package ies.modelo;
 
-public class Pagar_Efectivo implements Pagable {
+import jakarta.persistence.Entity;
+
+@Entity
+public class Pagar_Efectivo extends Pagable {
 
     @Override
     public void pagar(double cantidad) {
