@@ -1,3 +1,5 @@
 package ies.modelo;
 
-public enum SIZE {PEQUENO, MEDIANO, GRANDE}
+public enum SIZE {
+    PEQUENO, MEDIANO, GRANDE
+}

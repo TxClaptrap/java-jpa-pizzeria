@@ -2,16 +2,18 @@ package ies.modelo;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.ManyToMany;
 
-@XmlAccessorType(XmlAccessType.FIELD)
+@Entity
 public class Pizza  extends Producto {
+
+    @Enumerated(EnumType.STRING)
     private SIZE tamano;
-    @XmlElementWrapper(name = "ingredientes")
-    @XmlElement(name = "ingrediente")
+
+    @ManyToMany //Anotación para que se enganche con la tabla intermedia. @JoinTable(name = Producto-Ingrediente" JoinColumn = @JoinColumn(name = "producto_id"))
     private List<Ingrediente> listaIngredientes;
     
     public Pizza(String nombre, double precio, SIZE tamano, List<Ingrediente> listaIngredientes) {
@@ -29,7 +31,6 @@ public class Pizza  extends Producto {
     public Pizza() {
         super(null, 0);
     }
-
 
 
     public SIZE getTamano() {

@@ -1,6 +1,10 @@
 package ies.modelo;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+
 public class Bebida extends Producto{
+    @Enumerated(EnumType.STRING)
     private SIZE tamano;
 
     public Bebida(String nombre, double precio, SIZE tamano) {

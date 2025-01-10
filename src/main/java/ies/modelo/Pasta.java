@@ -2,15 +2,13 @@ package ies.modelo;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 
-@XmlAccessorType(XmlAccessType.FIELD)
+@Entity
 public class Pasta  extends Producto {
-    @XmlElementWrapper(name = "ingredientes")
-    @XmlElement(name = "ingrediente")
+
+    @ManyToMany //Anotación para que se enganche con la tabla intermedia. @JoinTable(name = Producto-Ingrediente" JoinColumn = @JoinColumn(name = "producto_id"))
     private List<Ingrediente> listaIngredientes;
 
     public Pasta(String nombre, double precio, List<Ingrediente> listaIngredientes) {

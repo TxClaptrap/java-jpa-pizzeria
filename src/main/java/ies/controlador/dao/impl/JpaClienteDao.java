@@ -49,7 +49,7 @@ public class JpaClienteDao implements ClienteDao {
         Cliente cliente = null;
         try {
             List<Cliente> clientes = entityManager.createQuery(
-                    "SELECT c FROM clientes c WHERE c.email = :email", Cliente.class)
+                    "SELECT c FROM cliente c WHERE c.email = :email", Cliente.class)
                     .setParameter("email", email)
                     .getResultList();
             

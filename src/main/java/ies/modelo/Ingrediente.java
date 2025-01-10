@@ -1,24 +1,23 @@
 package ies.modelo;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-import com.opencsv.bean.CsvBindAndSplitByName;
-import com.opencsv.bean.CsvBindByName;
-
-import javax.xml.bind.annotation.XmlAccessType;
-
-@XmlAccessorType(XmlAccessType.FIELD)
+@Entity
 public class Ingrediente {
-    @CsvBindByName(column= "ID")
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
-    @CsvBindByName(column= "NOMBRE")
+    @Column(unique = true, nullable = false)
     private String nombre;
-    @CsvBindAndSplitByName(column = "ALERGENOS", writeDelimiter = ",", elementType = String.class)
-    @XmlElementWrapper(name = "alergenos")
-    @XmlElement(name = "alergeno")
+
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> alergenos;
 
     public Ingrediente() {
