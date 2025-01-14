@@ -130,7 +130,7 @@ public class Main {
             //controladorPedido.registrarPedido(pedido);
             controladorPedido.agregarLineaPedido(carbonara, 2);
             controladorPedido.agregarLineaPedido(aberrante, 1);
-            controladorPedido.finalizarPedido(pagoTarjeta);
+            //controladorPedido.finalizarPedido(pagoTarjeta);
             controladorPedido.entregarPedido(pedido.getId());
             
             System.out.println(pedido.getEstado());

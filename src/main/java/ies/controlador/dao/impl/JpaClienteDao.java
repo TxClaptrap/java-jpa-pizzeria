@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.hibernate.Hibernate;
 
+import com.mysql.cj.xdevapi.Client;
+
 import ies.controlador.dao.ClienteDao;
 import ies.modelo.Cliente;
 import jakarta.persistence.EntityManager;
@@ -22,25 +24,47 @@ public class JpaClienteDao implements ClienteDao {
     @Override
     public void insertCliente(Cliente cliente) throws SQLException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        entityTransaction.begin();
+        entityManager.getTransaction().begin();
         entityManager.persist(cliente); // INSERT
-        entityTransaction.commit();
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @Override
     public void updateCliente(Cliente cliente) throws SQLException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        entityManager.merge(cliente);
+        entityManager.getTransaction().begin(); // Iniciar la transacción
+        entityManager.merge(cliente); // Merge
+        entityManager.getTransaction().commit(); // Confirmar la transacción
+        entityManager.close(); // Cerrar el EntityManager
     }
 
+    //Hay que hacerlo diferente al concesionario por el lazy
     @Override
     public void deleteCliente(Cliente cliente) throws SQLException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        entityTransaction.begin();
-        entityManager.remove(cliente);
-        entityTransaction.commit();
+
+        try {
+            entityManager.getTransaction().begin();
+
+            // Buscar el cliente en la base de datos
+            Cliente clienteExistente = entityManager.find(Cliente.class, cliente.getId());
+
+            if (clienteExistente != null) {
+                entityManager.remove(clienteExistente);
+            } else {
+                throw new SQLException("Cliente no encontrado con ID: " + cliente.getId());
+            }
+
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction(); //rollback en caso de error
+            }
+            throw new SQLException("Error al eliminar el cliente: " + e.getMessage(), e);
+        } finally {
+            entityManager.close();
+        }
     }
 
     @Override
@@ -49,32 +73,55 @@ public class JpaClienteDao implements ClienteDao {
         Cliente cliente = null;
         try {
             List<Cliente> clientes = entityManager.createQuery(
-                    "SELECT c FROM cliente c WHERE c.email = :email", Cliente.class)
+                    "SELECT c FROM Cliente c WHERE c.email = :email", Cliente.class)
                     .setParameter("email", email)
                     .getResultList();
-            
+
             if (!clientes.isEmpty()) {
                 cliente = clientes.get(0);
             }
         } finally {
-            entityManager.close(); 
+            entityManager.close();
         }
-        return cliente; 
+        return cliente;
     }
-    
 
     @Override
     public Cliente findClienteById(int id) throws SQLException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         Cliente cliente = entityManager.find(Cliente.class, id);
+        
+        // Fuerzo la inicialización de la lista para que no de error después de cerrar el entityManager
+        if (cliente != null) {
+            cliente.getListaPedidos().size(); 
+        }
+        
         entityManager.close();
         return cliente;
     }
+    
 
     @Override
     public List<Cliente> findAllClientes() throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAllClientes'");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        List<Cliente> clientes = null;
+    
+        try {
+            entityManager.getTransaction().begin();
+            clientes = entityManager.createQuery("SELECT c FROM Cliente c", Cliente.class).getResultList();
+    
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback(); 
+            }
+            throw new SQLException("Error al obtener la lista de clientes: " + e.getMessage(), e);
+        } finally {
+            entityManager.close(); 
+        }
+    
+        return clientes;
     }
+    
 
 }

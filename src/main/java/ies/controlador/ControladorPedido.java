@@ -2,7 +2,6 @@ package ies.controlador;
 
 import ies.modelo.Pedido;
 import ies.modelo.LineaPedido;
-import ies.modelo.Pagable;
 import ies.modelo.Producto;
 
 import java.sql.SQLException;
@@ -108,7 +107,7 @@ public class ControladorPedido {
      * pedidoActual.setEstado(EstadoPedido.PENDIENTE);
      * }
      * }
-     */
+     
 
      public void finalizarPedido(Pagable metodo) throws IllegalAccessException, SQLException {
     

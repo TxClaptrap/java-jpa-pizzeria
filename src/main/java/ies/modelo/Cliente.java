@@ -12,7 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-
 public class Cliente {
     
     @Id
@@ -28,7 +27,7 @@ public class Cliente {
     private String email;
     private String password;
 
-    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = {CascadeType.ALL, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Pedido> listaPedidos;
 
     private boolean administrador;
@@ -139,9 +138,8 @@ public class Cliente {
                 ", direccion='" + direccion + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", listaPedidos=" + listaPedidos +
                 ", administrador=" + administrador +
                 '}';
     }
+    
 }

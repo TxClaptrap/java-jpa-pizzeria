@@ -32,8 +32,15 @@ public class ControladorCliente {
     }
 
     public void actualizarCliente(Cliente cliente) throws SQLException {
-        clienteDao.updateCliente(cliente);
+        Cliente clienteExistente = clienteDao.findClienteByEmail(cliente.getEmail());
+        
+        if (clienteExistente != null) {
+            clienteDao.updateCliente(cliente);
+        } else {
+            throw new SQLException("Cliente no encontrado con el email: " + cliente.getEmail());
+        }
     }
+    
 
     public void borrarCliente(Cliente cliente) throws SQLException {
         clienteDao.deleteCliente(cliente);
