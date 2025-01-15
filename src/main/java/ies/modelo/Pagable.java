@@ -9,7 +9,7 @@ import jakarta.persistence.InheritanceType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-abstract class Pagable {
+public abstract class Pagable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

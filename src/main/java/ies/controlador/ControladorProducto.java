@@ -4,12 +4,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 import ies.controlador.dao.ProductoDao;
-import ies.controlador.dao.impl.JdbcProductoDao;
+import ies.controlador.dao.impl.JpaProductoDao;
 import ies.modelo.Producto;
 
 public class ControladorProducto {
 
-ProductoDao productoDao = new JdbcProductoDao();
+ProductoDao productoDao = new JpaProductoDao();
 
     public void registrarProducto(Producto producto) throws SQLException {
         productoDao.insertProducto(producto);

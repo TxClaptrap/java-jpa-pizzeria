@@ -1,6 +1,7 @@
 package ies.modelo;
 import java.util.List;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -18,6 +19,7 @@ public class Ingrediente {
     private String nombre;
 
     @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "alergenos_ingredientes")
     private List<String> alergenos;
 
     public Ingrediente() {

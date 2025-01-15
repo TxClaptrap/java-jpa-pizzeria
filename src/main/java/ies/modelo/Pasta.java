@@ -2,13 +2,21 @@ package ies.modelo;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Pasta  extends Producto {
 
-    @ManyToMany //Anotación para que se enganche con la tabla intermedia. @JoinTable(name = Producto-Ingrediente" JoinColumn = @JoinColumn(name = "producto_id"))
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    // Anotación para que se enganche con la tabla intermedia. @JoinTable(name = Producto-Ingrediente" JoinColumn = @JoinColumn(name = "producto_id"))
+    @JoinTable(name = "producto_ingrediente", 
+            joinColumns = @JoinColumn(name = "producto_id"), 
+            inverseJoinColumns = @JoinColumn(name = "ingrediente_id") 
+    )
     private List<Ingrediente> listaIngredientes;
 
     public Pasta(String nombre, double precio, List<Ingrediente> listaIngredientes) {

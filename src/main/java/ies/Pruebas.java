@@ -29,9 +29,23 @@ public class Pruebas {
     public static void main(String[] args) {
 
         ControladorCliente controladorCliente = new ControladorCliente();
+        ControladorProducto controladorProducto = new ControladorProducto();
 
         Cliente cliente = new Cliente("11111111P", "Pepe", "C/Falsa", "666000000", "zzz@gmail.com", "cosa");
         Cliente cliente2 = new Cliente("21111111P", "Pepi", "C/Falsa", "766000000", "zxzz@gmail.com", "coso");
+
+        Ingrediente echamas = new Ingrediente("Queso", List.of("lactosa", "adictivos"));
+        Ingrediente baseTrigo = new Ingrediente("Base con trigo", List.of("gluten", "sulfitos"));
+        Ingrediente baseSosa = new Ingrediente("Base sin trigo", List.of());
+        Ingrediente tomatico = new Ingrediente("Tomate", List.of("fructosa"));
+        Ingrediente chicha = new Ingrediente("Jamón York", List.of());
+        Ingrediente gazpacho = new Ingrediente("Piña", List.of("fructosa"));
+        Ingrediente chicha2 = new Ingrediente("Carne picada", List.of());
+        
+        Producto aberrante = new Pizza("Hawaiana", 8, SIZE.MEDIANO , List.of(baseTrigo, tomatico, echamas, chicha, gazpacho));
+        Producto bolognese = new Pasta("Boloñesa celiaca", 10, List.of(echamas, baseSosa, tomatico, chicha2));
+        Producto cola = new Bebida("CocaCola", 2, SIZE.PEQUENO);
+        Producto carbonara = new Pizza("Carbonara", 10, SIZE.GRANDE, List.of(echamas, baseTrigo, chicha));
 
 
         try {
@@ -47,6 +61,10 @@ public class Pruebas {
 
             System.out.println(controladorCliente.encontrarTodos());
             //controladorCliente.borrarCliente(cliente);
+
+            controladorProducto.registrarProducto(carbonara);
+            controladorProducto.registrarProducto(bolognese);
+            //controladorProducto.registrarProducto(aberrante);
 
         } catch (SQLException e) {
             // TODO Auto-generated catch block
