@@ -44,6 +44,7 @@ public class Pruebas {
         
         Producto aberrante = new Pizza("Hawaiana", 8, SIZE.MEDIANO , List.of(baseTrigo, tomatico, echamas, chicha, gazpacho));
         Producto bolognese = new Pasta("Boloñesa celiaca", 10, List.of(echamas, baseSosa, tomatico, chicha2));
+        Producto prueba = new Pasta("Bolo", 10, List.of(baseSosa, tomatico, chicha2));
         Producto cola = new Bebida("CocaCola", 2, SIZE.PEQUENO);
         Producto carbonara = new Pizza("Carbonara", 10, SIZE.GRANDE, List.of(echamas, baseTrigo, chicha));
 
@@ -64,7 +65,17 @@ public class Pruebas {
 
             controladorProducto.registrarProducto(carbonara);
             controladorProducto.registrarProducto(bolognese);
-            //controladorProducto.registrarProducto(aberrante);
+            controladorProducto.registrarProducto(aberrante);
+
+            carbonara.setPrecio(20);
+
+            controladorProducto.actualizarProducto(carbonara);
+            controladorProducto.borrarProducto(aberrante);
+            aberrante.setId(0);
+
+            controladorProducto.registrarProducto(aberrante);
+
+            System.out.println(controladorProducto.encontrarProductoById(1));
 
         } catch (SQLException e) {
             // TODO Auto-generated catch block

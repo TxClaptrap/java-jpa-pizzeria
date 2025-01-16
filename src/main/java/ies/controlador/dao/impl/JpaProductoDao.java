@@ -1,10 +1,14 @@
 package ies.controlador.dao.impl;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.Hibernate;
 
 import ies.controlador.dao.ProductoDao;
 import ies.modelo.Bebida;
+import ies.modelo.Cliente;
 import ies.modelo.Ingrediente;
 import ies.modelo.Pasta;
 import ies.modelo.Pizza;
@@ -26,8 +30,31 @@ public class JpaProductoDao implements ProductoDao {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
 
-        entityManager.merge(producto);
+        List<Ingrediente> ingredientes = new ArrayList<>();
+        if (producto instanceof Pizza) {
+            ingredientes = ((Pizza) producto).getListaIngredientes();
+        } else if (producto instanceof Pasta) {
+            ingredientes = ((Pasta) producto).getListaIngredientes();
+        }
 
+        List<Ingrediente> ingredientesConID = new ArrayList<>();
+        for (Ingrediente i : ingredientes) {
+            Ingrediente ingredienteConId = entityManager.find(Ingrediente.class, i.getId());
+            if (ingredienteConId == null) {
+                entityManager.persist(i);
+                ingredienteConId = i;
+            }
+            ingredienteConId.setAlergenos(i.getAlergenos());
+            ingredientesConID.add(ingredienteConId);
+        }
+
+        if (producto instanceof Pizza) {
+            ((Pizza) producto).setListaIngredientes(ingredientesConID);
+        } else if (producto instanceof Pasta) {
+            ((Pasta) producto).setListaIngredientes(ingredientesConID);
+        }
+
+        entityManager.persist(producto);
         entityManager.getTransaction().commit();
         entityManager.close();
     }
@@ -39,7 +66,7 @@ public class JpaProductoDao implements ProductoDao {
                     .setParameter("nombre", nombre)
                     .getSingleResult();
         } catch (NoResultException e) {
-            return null; // No se encontró el ingrediente
+            return null;
         } finally {
             entityManager.close();
         }
@@ -47,20 +74,57 @@ public class JpaProductoDao implements ProductoDao {
 
     @Override
     public void updateProducto(Producto producto) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateProducto'");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin(); // Iniciar la transacción
+        entityManager.merge(producto); // Merge
+        entityManager.getTransaction().commit(); // Confirmar la transacción
+        entityManager.close(); // Cerrar el EntityManager
     }
 
     @Override
     public void deleteProducto(Producto producto) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteProducto'");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try {
+            entityManager.getTransaction().begin();
+
+            Producto productoExistente = entityManager.find(Producto.class, producto.getId());
+
+            if (productoExistente != null) {
+                entityManager.remove(productoExistente);
+            } else {
+                throw new SQLException("Producto no encontrado con ID: " + producto.getId());
+            }
+
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction(); // rollback en caso de error
+            }
+            throw new SQLException("Error al eliminar el producto: " + e.getMessage(), e);
+        } finally {
+            entityManager.close();
+        }
     }
 
     @Override
     public Producto findProductoById(int idProducto) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findProductoById'");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Producto producto = entityManager.find(Producto.class, idProducto);
+        try {
+            if (producto != null) {
+                if (producto instanceof Pizza) {
+                    Hibernate.initialize(((Pizza) producto).getListaIngredientes());
+                } else if (producto instanceof Pasta) {
+                    Hibernate.initialize(((Pasta) producto).getListaIngredientes());
+                }
+                return producto;
+            } else {
+                return null;
+            }
+        } finally {
+            entityManager.close();
+        }
     }
 
     @Override
