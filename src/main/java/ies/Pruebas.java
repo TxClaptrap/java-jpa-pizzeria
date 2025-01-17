@@ -12,6 +12,7 @@ import javax.xml.bind.Marshaller;
 
 import ies.controlador.ClientesWrapper;
 import ies.controlador.ControladorCliente;
+import ies.controlador.ControladorPedido;
 import ies.controlador.ControladorProducto;
 import ies.controlador.GestorFicheros;
 import ies.controlador.PizzasWrapper;
@@ -19,7 +20,9 @@ import ies.controlador.Varios;
 import ies.modelo.Bebida;
 import ies.modelo.Cliente;
 import ies.modelo.Ingrediente;
+import ies.modelo.Pagar_Tarjeta;
 import ies.modelo.Pasta;
+import ies.modelo.Pedido;
 import ies.modelo.Pizza;
 import ies.modelo.Producto;
 import ies.modelo.ProductosSeparados;
@@ -47,7 +50,10 @@ public class Pruebas {
         Producto prueba = new Pasta("Bolo", 10, List.of(baseSosa, tomatico, chicha2));
         Producto cola = new Bebida("CocaCola", 2, SIZE.PEQUENO);
         Producto carbonara = new Pizza("Carbonara", 10, SIZE.GRANDE, List.of(echamas, baseTrigo, chicha));
+        Pedido pedido = new Pedido(cliente);
 
+        ControladorPedido controladorPedido = new ControladorPedido(pedido);
+        Pagar_Tarjeta pagoTarjeta = new Pagar_Tarjeta();
 
         try {
             controladorCliente.registrarCliente(cliente);
@@ -65,6 +71,7 @@ public class Pruebas {
 
             controladorProducto.registrarProducto(carbonara);
             controladorProducto.registrarProducto(bolognese);
+            controladorProducto.registrarProducto(cola);
             controladorProducto.registrarProducto(aberrante);
 
             carbonara.setPrecio(20);
@@ -74,9 +81,33 @@ public class Pruebas {
             aberrante.setId(0);
 
             controladorProducto.registrarProducto(aberrante);
-
+            System.out.println("***********por id**************");
             System.out.println(controladorProducto.encontrarProductoById(1));
+            System.out.println("************findAll***********");
+            System.out.println(controladorProducto.encontrarAllProductos());
+            System.out.println("***********ingredienteByProducto********");
+            System.out.println(controladorProducto.encontrarIngredientesByProducto(1));
+            System.out.println("***********alergenoByIngrediente********");
+            System.out.println(controladorProducto.encontrarAlergenosByIngrediente(2));
 
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        cliente.setId(1);
+        System.out.println(cliente.getId());
+
+
+        try {
+            controladorPedido.registrarPedido(pedido);
+            //controladorPedido.agregarLineaPedido(carbonara, 2);
+            //controladorPedido.agregarLineaPedido(aberrante, 1);
+            //controladorPedido.finalizarPedido(pagoTarjeta);
+            //controladorPedido.entregarPedido(pedido.getId());
+            
+            //System.out.println(pedido.getEstado());
+            
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

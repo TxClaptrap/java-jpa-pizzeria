@@ -5,16 +5,15 @@ import ies.modelo.LineaPedido;
 import ies.modelo.Producto;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import ies.controlador.dao.PedidoDao;
-import ies.controlador.dao.impl.JdbcPedidoDao;
+import ies.controlador.dao.impl.JpaPedidoDao;
 import ies.modelo.Cliente;
 import ies.modelo.EstadoPedido;
 
 public class ControladorPedido {
-    private PedidoDao pedidoDao = new JdbcPedidoDao();
+    private PedidoDao pedidoDao = new JpaPedidoDao();
     private Pedido pedidoActual;
     //private List<Pedido> listaFinalizados;
 

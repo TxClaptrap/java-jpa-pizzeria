@@ -18,6 +18,9 @@ public class Bebida extends Producto{
         super(id, nombre, precio);
         this.tamano = tamano;
     }
+    
+    public Bebida () {
+    }
 
     public SIZE getTamano() {
         return tamano;

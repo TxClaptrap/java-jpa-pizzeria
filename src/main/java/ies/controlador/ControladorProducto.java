@@ -1,11 +1,16 @@
 package ies.controlador;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import ies.controlador.dao.ProductoDao;
 import ies.controlador.dao.impl.JpaProductoDao;
+import ies.modelo.Ingrediente;
+import ies.modelo.Pasta;
+import ies.modelo.Pizza;
 import ies.modelo.Producto;
+import jakarta.persistence.EntityManager;
 
 public class ControladorProducto {
 
@@ -30,6 +35,15 @@ ProductoDao productoDao = new JpaProductoDao();
     public List<Producto> encontrarAllProductos() throws SQLException {
         return productoDao.findAllProductos();
     }
+
+    public List<Ingrediente> encontrarIngredientesByProducto(int idProducto) throws SQLException {
+        return productoDao.findIngredientesByProducto(idProducto);
+    }
+
+    public List<String> encontrarAlergenosByIngrediente(int idIngrediente) throws SQLException {
+        return productoDao.findAlergenosByIngrediente(idIngrediente);
+    }
+
 
     /* 
     GestorFicheros gestorFicheros;

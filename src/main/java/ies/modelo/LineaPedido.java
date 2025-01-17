@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -18,6 +19,8 @@ public class LineaPedido {
     @OneToOne
     private Producto producto;
     private Double precio;
+    @ManyToOne
+    private Pedido pedido;
 
     public LineaPedido(int cantidad, Producto producto) {
         this.cantidad = cantidad;
@@ -61,6 +64,14 @@ public class LineaPedido {
 
     public Double getPrecio() {
         return precio;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
     @Override
