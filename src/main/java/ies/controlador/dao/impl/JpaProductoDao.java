@@ -81,19 +81,16 @@ public class JpaProductoDao implements ProductoDao {
 
         try {
             entityManager.getTransaction().begin();
-
             Producto productoExistente = entityManager.find(Producto.class, producto.getId());
-
             if (productoExistente != null) {
                 entityManager.remove(productoExistente);
             } else {
                 throw new SQLException("Producto no encontrado con ID: " + producto.getId());
             }
-
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction(); // rollback en caso de error
+                entityManager.getTransaction();
             }
             throw new SQLException("Error al eliminar el producto: " + e.getMessage(), e);
         } finally {

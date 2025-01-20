@@ -6,6 +6,8 @@ import java.util.List;
 import ies.modelo.EstadoPedido;
 import ies.modelo.LineaPedido;
 import ies.modelo.Pedido;
+import ies.modelo.Producto;
+import ies.modelo.SIZE;
 
 public interface PedidoDao {
     public void insertPedido(Pedido pedido ) throws SQLException;
@@ -15,5 +17,6 @@ public interface PedidoDao {
     public List<Pedido> findPedidosByClienteId(int ClienteId) throws SQLException;
     public List<Pedido> findPedidosByEstado(EstadoPedido estado) throws SQLException;
     public List<LineaPedido> findLineasPedidoByPedidoId(int PedidpId) throws SQLException;
+    public void addLineaPedido(Producto producto, int cantidad, int clienteId) throws IllegalAccessException, SQLException;
 
 }

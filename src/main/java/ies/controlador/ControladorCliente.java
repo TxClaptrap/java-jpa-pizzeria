@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import ies.controlador.dao.ClienteDao;
-import ies.controlador.dao.impl.JdbcClienteDao;
 import ies.controlador.dao.impl.JpaClienteDao;
 import ies.modelo.Cliente;
 
@@ -20,16 +19,17 @@ public class ControladorCliente {
         }
     }
 
-    // loginCliente(mail, pass)
     public Cliente loginCliente(String email, String password) throws SQLException {
-        if (clienteDao.findClienteByEmail(email).getEmail().equals(email)
-                && clienteDao.findClienteByEmail(email).getPassword().equals(password)) {
-            return clienteDao.findClienteByEmail(email);
-        } else {
-            System.out.println("No se pudo acceder a la lista de clientes.");
-            return null;
+        Cliente cliente = clienteDao.findClienteByEmail(email);
+        if (cliente == null) {
+            throw new SQLException("Cliente no encontrado con el email: " + email);
         }
+        if (!cliente.getPassword().equals(password)) {
+            throw new SQLException("Contraseña incorrecta para el cliente con email: " + email);
+        }
+        return cliente;
     }
+    
 
     public void actualizarCliente(Cliente cliente) throws SQLException {
         Cliente clienteExistente = clienteDao.findClienteByEmail(cliente.getEmail());
@@ -39,8 +39,7 @@ public class ControladorCliente {
         } else {
             throw new SQLException("Cliente no encontrado con el email: " + cliente.getEmail());
         }
-    }
-    
+    }  
 
     public void borrarCliente(Cliente cliente) throws SQLException {
         clienteDao.deleteCliente(cliente);
@@ -54,102 +53,8 @@ public class ControladorCliente {
         return clienteDao.findClienteById(idCliente);
     }
 
-    /*
-     * Antigua Pizzería
-     * 
-     * //clienteActual
-     * private Cliente clienteActual;
-     * private List<Cliente> listaClientes;
-     * GestorFicheros gestorFicheros;
-     * 
-     * public ControladorCliente() {
-     * gestorFicheros = new GestorFicheros();
-     * }
-     * 
-     * public ControladorCliente(Cliente clienteActual) {
-     * this.clienteActual = clienteActual;
-     * this.listaClientes = new ArrayList<Cliente>();
-     * gestorFicheros = new GestorFicheros();
-     * }
-     * 
-     * public Cliente getClienteActual() {
-     * return clienteActual;
-     * }
-     * 
-     * public void setClienteActual(Cliente clienteActual) {
-     * this.clienteActual = clienteActual;
-     * }
-     * 
-     * public List<Cliente> getListaClientes() {
-     * return listaClientes;
-     * }
-     * 
-     * public void setListaClientes(List<Cliente> listaClientes) {
-     * this.listaClientes = listaClientes;
-     * }
-     * 
-     * //registrarCliente()
-     * public void registrarCliente(String dni, String nombre, String direccion,
-     * String telefono, String email, String password) {
-     * if (listaClientes != null) {
-     * boolean emailDuplicado = false;
-     * 
-     * for (Cliente cliente : listaClientes) {
-     * if (cliente.getEmail() != null && cliente.getEmail().equals(email)) {
-     * emailDuplicado = true;
-     * break;
-     * }
-     * }
-     * 
-     * if (!emailDuplicado) {
-     * listaClientes.add(new Cliente(dni, nombre, direccion, telefono, email,
-     * password));
-     * System.out.println("Cliente registrado con éxito.");
-     * } else {
-     * System.out.println("Error: El email ya está registrado.");
-     * }
-     * } else {
-     * System.out.println("No se pudo acceder a la lista de clientes.");
-     * }
-     * 
-     * }
-     * 
-     * //loginCliente(mail, pass)
-     * public boolean loginCliente(String email, String password) {
-     * if (listaClientes != null) {
-     * for (Cliente cliente : listaClientes) {
-     * if (cliente.getEmail() != null && cliente.getEmail().equals(email) &&
-     * cliente.getPassword().equals(password)) {
-     * clienteActual = cliente;
-     * System.out.println("Login correcto. Bienvenido " + cliente.getNombre());
-     * return true;
-     * }
-     * }
-     * System.out.println("Error: Email o contraseña incorrectos.");
-     * } else {
-     * System.out.println("No se pudo acceder a la lista de clientes.");
-     * }
-     * return false;
-     * }
-     * 
-     * /*
-     * //Métodos de encapsulado, para no hacerlo todo desde GestorFicheros
-     * public List<Cliente> leerClientes() throws IOException {
-     * return gestorFicheros.leerAdministradores();
-     * }
-     * 
-     * 
-     * 
-     * public boolean exportarClientesXML(List<Cliente> clientes) throws
-     * JAXBException {
-     * 
-     * return gestorFicheros.exportarXML(clientes);
-     * }
-     * 
-     * public List<Cliente> importarClientesXML() throws JAXBException {
-     * return gestorFicheros.importarXML();
-     * }
-     * 
-     *//* */
+    public Cliente encontrarClienteByEmail(String email) throws SQLException {
+        return clienteDao.findClienteByEmail(email);
+    }
 
 }

@@ -3,11 +3,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -21,11 +26,12 @@ public class Pedido {
     private int id;
     @Temporal(TemporalType.DATE)
     private LocalDate fecha;
-    @OneToMany (mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY) 
     private List<LineaPedido> listaLineaPedidos; 
     private double precioTotal;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Pagable metodoPago;
+    @Enumerated(EnumType.STRING)
     private EstadoPedido estado;
 
     @ManyToOne   
@@ -47,6 +53,10 @@ public class Pedido {
         estado = EstadoPedido.PENDIENTE;
     }
 
+    public Pedido() {
+
+    }
+
     public EstadoPedido getEstado() {
         return estado;
     }
@@ -65,9 +75,6 @@ public class Pedido {
 
 
     public double getPrecioTotal() {
-        for (LineaPedido lineaPedido : listaLineaPedidos) {
-            precioTotal += lineaPedido.getPrecio();
-        }
         return precioTotal;
     }
 

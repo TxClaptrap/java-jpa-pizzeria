@@ -3,15 +3,11 @@ package ies.controlador.dao.impl;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.hibernate.Hibernate;
-
-import com.mysql.cj.xdevapi.Client;
-
 import ies.controlador.dao.ClienteDao;
 import ies.modelo.Cliente;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
 
 public class JpaClienteDao implements ClienteDao {
@@ -39,7 +35,7 @@ public class JpaClienteDao implements ClienteDao {
         entityManager.close(); // Cerrar el EntityManager
     }
 
-    //Hay que hacerlo diferente al concesionario por el lazy
+    // Hay que hacerlo diferente al concesionario por el lazy
     @Override
     public void deleteCliente(Cliente cliente) throws SQLException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -59,7 +55,7 @@ public class JpaClienteDao implements ClienteDao {
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction(); //rollback en caso de error
+                entityManager.getTransaction(); // rollback en caso de error
             }
             throw new SQLException("Error al eliminar el cliente: " + e.getMessage(), e);
         } finally {
@@ -72,17 +68,23 @@ public class JpaClienteDao implements ClienteDao {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         Cliente cliente = null;
         try {
-            List<Cliente> clientes = entityManager.createQuery(
-                    "SELECT c FROM Cliente c WHERE c.email = :email", Cliente.class)
+            entityManager.getTransaction().begin();
+            cliente = entityManager.createQuery("SELECT c FROM Cliente c WHERE c.email = :email", Cliente.class)
                     .setParameter("email", email)
-                    .getResultList();
+                    .getSingleResult();
 
-            if (!clientes.isEmpty()) {
-                cliente = clientes.get(0);
+            entityManager.getTransaction().commit();
+        } catch (NoResultException e) {
+            cliente = null;
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
             }
+            throw new SQLException("Error al buscar el cliente por email: " + e.getMessage(), e);
         } finally {
             entityManager.close();
         }
+
         return cliente;
     }
 
@@ -93,35 +95,30 @@ public class JpaClienteDao implements ClienteDao {
         
         // Fuerzo la inicialización de la lista para que no de error después de cerrar el entityManager
         if (cliente != null) {
-            cliente.getListaPedidos().size(); 
+            cliente.getListaPedidos().size();
         }
-        
         entityManager.close();
         return cliente;
     }
-    
 
     @Override
     public List<Cliente> findAllClientes() throws SQLException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         List<Cliente> clientes = null;
-    
         try {
             entityManager.getTransaction().begin();
             clientes = entityManager.createQuery("SELECT c FROM Cliente c", Cliente.class).getResultList();
-    
+
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback(); 
+                entityManager.getTransaction().rollback();
             }
             throw new SQLException("Error al obtener la lista de clientes: " + e.getMessage(), e);
         } finally {
-            entityManager.close(); 
+            entityManager.close();
         }
-    
         return clientes;
     }
-    
 
 }

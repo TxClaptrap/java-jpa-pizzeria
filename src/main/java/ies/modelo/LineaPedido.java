@@ -3,6 +3,7 @@ package ies.modelo;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -11,12 +12,12 @@ import jakarta.persistence.OneToOne;
 
 @Entity
 public class LineaPedido {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private int cantidad;
-    @OneToOne
+    @OneToOne (fetch = FetchType.LAZY)
     private Producto producto;
     private Double precio;
     @ManyToOne
@@ -28,13 +29,11 @@ public class LineaPedido {
         this.precio = producto.getPrecio() * cantidad;
     }
 
-    public LineaPedido(int cantidad, Producto producto, Double precio) {
-        this.cantidad = cantidad;
-        this.producto = producto;
-        this.precio = precio;
+    public LineaPedido(List<LineaPedido> listaLineaPedidos) {
+
     }
 
-    public LineaPedido(List<LineaPedido> listaLineaPedidos) {
+    public LineaPedido() {
         
     }
 
@@ -79,7 +78,5 @@ public class LineaPedido {
         return "LineaPedido [id=" + id + ", cantidad=" + cantidad + ", producto=" + producto + ", precio=" + precio
                 + "]";
     }
-
-    
 
 }
